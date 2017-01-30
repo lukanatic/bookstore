@@ -7,5 +7,6 @@ define('DBNAME', 'bookstore');
 define('DBUSER', 'root');
 define('DBPASS', 'ibrahim');
 
+# creating database connection
 $dbh = new PDO('mysql:host=localhost;dbname='.DBNAME, DBUSER, DBPASS);
 

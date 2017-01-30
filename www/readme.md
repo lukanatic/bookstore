@@ -9,3 +9,6 @@ Todo:
 2. Ensuer admins register with unique emails
 3. Do form validation
 4. Authenticate admin
+
+fixes & Buges
+1. Different admins could register with the same emails. This issue has been solved

@@ -1,6 +1,8 @@
 <?php
 		# include header
 		include 'includes/header.php';
+
+
 ?>
 	<div class="wrapper">
 		<h1 id="login-label">Admin Login</h1>
