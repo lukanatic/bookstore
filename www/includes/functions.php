@@ -32,3 +32,41 @@
 		$statement->execute($data);
 	}
 
+	function authenticateAdmin($dbon, $e, $p, $err){
+		$res = true;
+
+		$stmt = $dbcon->prepare("SELECT email, hash FROM admin WHERE email =:e");
+		$stmt->execute([":e"=> $e]);
+
+		#fetch
+		$row = $stmt->fetch(PDO::FETCH_ASSOC);
+		$result = $stmt->rowCount();
+
+		#if there was no match
+		if ($result <=0) {
+			$err['email'] = "either email or password is incorrect";
+		}
+		#if(!password_verify($p, $row['hash'])){
+		#if(password_verify($p, $row['hash']) == 1){
+
+		if(!password_verify($p, $row['hash'])){
+			$err['password'] = "either email or password is incorrect";
+		}
+
+		return [$res, $row]
+	}
+	// function doesEmailExist($dbconn, $email){
+	// 	$result = false;
+	// 	$stms = $dbcon_>prepare("SELECT eamil FROM admin WHERE email=:e");
+
+	// 	#bind params
+	// 	$stmt->bindParam(":e", $eamil);
+	// 	$stmt->execute();
+
+	// 	#get number of rows returned
+	// 	$count = $stmt->rowCount();
+
+	// 	if($count > 0){
+	// 		$result = true;
+	// 	}
+	// }
