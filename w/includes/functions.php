@@ -14,11 +14,7 @@
 		# prepare statement...
 		$statement = $dbcon->prepare("INSERT INTO admin(firstname,lastname,email,hash) VALUES (:fn, :ln, :em, :hs)");
 
-
-	// function loginAdmin($dbcon, $e,$p){
-
-	// }
-	// 	# hash password
+		# hash password
 		$hash = password_hash($p, PASSWORD_BCRYPT);
 		
 		# bind params...
@@ -31,4 +27,3 @@
 
 		$statement->execute($data);
 	}
-

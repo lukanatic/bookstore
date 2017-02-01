@@ -12,48 +12,42 @@
 	$errors = [];
 
 	#ensure user clicks the submit button
-	if (array_key_exists('register', $_POST)) 
-	{
+	if (key_exists('register', $_POST)) {
 
 		# validate first name
-		if(!empty($_POST['fname'])) 
-		{
+		if(!empty($_POST['fname'])) {
 			$fname = $_POST['fname'];
 		} else {
 			$errors['fname'] = "Please enter a first name";
 		}
 
 		# validate lastname
-		if(!empty($_POST['lname'])) 
-		{
+		if(!empty($_POST['lname'])) {
 			$lname = $_POST['lname'];
 		} else {
 			$errors['lname'] = "Please enter a last name";
 		}
 
 		# validate email
-		if(!empty($_POST['email'])) 
-		{
+		if(!empty($_POST['email'])) {
 			$email = $_POST['email'];
 		} else {
 			$errors['email'] = "Please enter a valid email";
 		}
 
 		# validate password
-		if(!empty($_POST['password'])) 
-		{
+		if(!empty($_POST['password'])) {
 			$password = $_POST['password'];
 		} else {
 			$errors['password'] = "Please enter a password";
 		}
 
 		# validate second password
-		if(!empty($_POST['pword'])) 
-		{
+		if(!empty($_POST['pword'])) {
+
 			$pword = $_POST['pword'];
 			#validate confirm password mismatch
-			if($password != $pword)
-			{
+			if($password != $pword) {
 				$errors['pword'] = "Password mismatch!";
 			}
 
@@ -61,8 +55,7 @@
 			$errors['pword'] = "Please re-enter a password";
 		}
 
-		if(empty($errors)) 
-		{
+		if(empty($errors)) {
 			# save admin user to db..
 			registerAdmin($dbcon,$fname,$lname,$email,$pword);
 
