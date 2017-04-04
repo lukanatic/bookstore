@@ -1,100 +1,71 @@
 <?php
 	session_start();
 
-	#include header
-	include "includes/header.php";
+	# import db connection
+	include 'config/db.php';
 
-	#include database
-	include "config/db.php"; 
+	# import functions
+	include 'includes/functions.php';
 
-	# include functions
-	include "includes/functions.php";
+	# import header..
+	include 'includes/header.php';
 
-	# handle form errors
+	# cache the form errors
 	$errors = [];
 
-	$message = '';
+	if(array_key_exists('login', $_POST)) {
+		# validate email
+		if(empty($_POST['email'])) {
+			$errors['email'] = "Please enter an email address";
+		} 
 
-
-	# Check whether the email and password can retrieved
-#	if (!empty($_POST['email']) && !empty($_POST['password'])) 
-#	{
-// #		$records = $dbcon->prepare("SELECT admin_id, email, hash FROM admin WHERE email = :email");
-// 		$data = [':email' => $_POST['email']];
-// 		$records->execute($data);
-// 		$results = $records->fetch(PDO::FETCH_ASSOC);
-
-		#$message = '';
-
-	# Proper verifying the password.
-	// if(count($results) > 0 && password_verify($_POST['password'], $results['hash']))
-		// {
-		// 	$_SESSION['user_id'] = $results['user_id'];
-		// 	header("Location: index.php");
-		// }
-
-	// $message = 'Sorry, do not match';
-	// }
-
-	if (array_key_exists('submit', $_POST)) {
-		#validate email
-		if (empty($_POST['email'])) {
-			$errors['email'] = "Please enter a email";
-		}
-	
-	if (empty($_POST['password'])) {
-		$errors['password'] = "Please Enter a password"
+		# validate password
+		if(empty($_POST['password'])) {
+			$errors['password'] = "Please enter a password";
 		}
 
-	$chk = authenticateAdmin($conn, $_POST['email'], $_POST['password'], $errors);
-
-	if (!$chk[0]) {
-		$errors['password'] = "Please Enter a password"
 		
-	}
-			
-	if(empty($errors)){
-		$data = $chk[1];
-		$_SESSION['admin_id'] = $data['admin_id'];
 
-		#redirect ..
-		header("Location: add_product.php");
-		}
-		
+		if(empty($errors)) {
+
+			# attempt to log user in ...
+			$chk = authenticateAdmin($dbcon, $_POST['email'], $_POST['password']);
+
+			# if valid user / password combination
+			// if($chk[0]) {
+				# set user id in session
+				// $_SESSION['admin_id'] = $chk[1]['admin_id'];
+
+				# login user to add product page /dashboard
+				// header('location: add_product.php');
+
+			// }
+
+			$errors['password'] = "Email and Password do not match";
 		}
 	}
 ?>
-<div class="wrapper">
-	<h1 id="login-label">Admin Login</h1>
-	<hr>
-	<form id="login" method="POST">
-		<div>
-			#<?php 
-				if (!empty($message)) 
-					{
-						echo '<p>'.$message.'</p>';
-					} 
-			?>
- 
-			<label>email:</label>
-			<input type="text" name="email" placeholder="email">
-		</div>
-		<div>
-			<?php 
-				if (!empty($message)) 
-				{
-					echo '<p>'.$message.'</p>';
-				}
-			?>
-			<label>password:</label>
-			<input type="password" name="password" placeholder="password">
-		</div>
-		<input type="submit" name="submit" value="login">
-	</form>
+	<div class="wrapper">
+		<h1 id="login-label">Admin Login</h1>
+		<hr>
+		<form id="login" method="POST" action="login.php">
+			<div>
+				<?php display_errors('email', $errors); ?>
+				<label>email:</label>
+				<input type="text" name="email" placeholder="email">
+			</div>
+			<div>
+				<?php display_errors('password', $errors); ?>
+				<label>password:</label>
+				<input type="password" name="password" placeholder="password">
+			</div>
+			<input type="submit" name="login" value="login">
+		</form>
 
-	<h4 class="jumpto">Don't have an account? <a href="register.php">register</a></h4>
-</div>
-<?php
-	#include footer
-	include "includes/footer.php";
+		<h4 class="jumpto">Don't have an account? <a href="register.php">register</a></h4>
+	</div>
+
+<?php 
+	# include footer
+	include 'includes/footer.php'; 
 ?>
